@@ -1,5 +1,5 @@
 # Dila
-Un detector de laísmo, loísmo y forma estándar con un léxico reducido.
+Un parser que señala el laísmo, loísmo y la forma estándar con un léxico reducido.
 
 El programa consta de tres archivos: dila.lex es el lexicón, dila.grm es la gramática con la que corre el programa,
 y dila.txt es un corpus de oraciones gramaticales y agramaticales para testearlo. 
