@@ -1,0 +1,43 @@
+;---------------------------------------------------------------------------------------------
+;TFA Lingüística Computacional - Máster en Ciencia del Lenguaje y Lingüística Hispánica (UNED)
+;Alumno: Daniel Caballero Payá
+;Nombre del programa: Dila
+;Descripción: El corpus de un parser que reconoce y señala los laísmos, loísmos y la forma estándar
+;---------------------------------------------------------------------------------------------
+
+
+;-------------------------------------------------
+;ORACIONES GRAMATICALES RECONOCIDAS POR EL PARSER
+;-------------------------------------------------
+
+
+Helena compra el libro
+los nin3os compraron unas cosas
+Helena da una cosa a el nin3o
+Javier dio unas cosas a las nin3as
+las nin3as las dan una cosa
+Javier los da un libro
+Helena le da unos libros a Javier
+Helena las da el libro a las nin3as
+Javier les dio una cosa a las nin3as
+Helena los dio unos libros a los nin3os
+Javier la da una cosa a Helena
+las nin3as lo dieron un libro a Javier
+
+
+;-------------------------------------------------------
+;ORACIONES AGRAMATICALES Y NO RECONOCIDAS POR EL PARSER
+;-------------------------------------------------------
+
+un libro compra una cosa
+Helena compro1 un nin3o
+Helena dan una cosa a el nin3o
+los nin3os dio unas cosas a las nin3as
+las nin3as las da una cosa
+Javier los da una Helena
+la Helena le da unos libros a Javier
+Helena la da el libro a las nin3as
+Javier los dio una cosa a las nin3as
+una Helena le dio unos libros a los nin3os
+Javier lo da una cosa a Helena
+nin3as lo dieron un libro a Javier

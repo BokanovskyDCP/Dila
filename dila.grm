@@ -1,0 +1,102 @@
+;---------------------------------------------------------------------------------------------
+;TFA Lingüística Computacional - Máster en Ciencia del Lenguaje y Lingüística Hispánica (UNED)
+;Alumno: Daniel Caballero Payá
+;Nombre del programa: Dila
+;Descripción: La gramática de un parser que reconoce y señala los laísmos, loísmos y la forma estándar
+;---------------------------------------------------------------------------------------------
+
+
+;--------------
+;Default values
+;--------------
+
+Let N be <head agr number> = !SG
+		 <head agr person> = !3
+		 <head type>   	   = !COMUN
+		 <head sem>		   = !-HUM
+
+;------------------
+;Agreement features
+;------------------
+
+Let masc   be <head agr gender> = MASC
+Let fem    be <head agr gender> = FEM
+Let sg     be <head agr number> = SG
+Let pl	   be <head agr number> = PL
+Let 3      be <head agr person> = 3
+
+;----------------
+;Dialect features
+;-----------------
+
+Let laismo   be <head dialect_feat>	= LAISMO
+Let loismo   be <head dialect_feat>	= LOISMO
+Let estandar be <head dialect_feat> = ESTANDAR
+
+;-----------------
+;Verb features
+;-----------------
+
+let trans   be <head arguments> = TRANS ; En lugar de definir la estructura sintáctica de los V trans y ditrans, marcamos este rasgo según sus argumentos
+let ditrans be <head arguments> = DITRANS
+Let past    be <head tense>     = PAST
+Let pres    be <head tense>		= PRES
+
+;-----------------
+;Lexical features
+;-----------------
+
+Let propio be <head type> = PROPIO
+Let comun  be <head type> = COMUN
+
+;------------------
+;Semantic features
+;------------------
+
+Let +hum be <head sem> = +HUM 
+
+
+;-----------------------
+;Phrase structure rules
+;-----------------------
+
+Rule {S} S -> NP VP :
+	 <NP head agr>     = <VP head agr>
+	 <NP head sem>	   = +HUM  ; con esto conseguimos que no puedan ser sujeto los elementos del léxico no humanos
+  	 <VP subcat first> = <NP>
+  	 <S  head>         = <VP head>
+  	 <VP subcat rest>  = end .
+
+Rule {PP} PP -> Pre NP :
+	 <PP head>     = <Pre head>
+	 <NP head sem> = +HUM ; 
+	 <PP head agr> = <NP head agr>. ;Esta línea es importante para que posteriormente podamos trazar la concordancia con el Pro del OI
+
+Rule {ProP} ProP -> Pro ; Esta regla define el sintagma del pronombre que sustituye al OI, sea laísta, loísta o estándar
+	 <ProP head> = <Pro head> .
+
+Rule {NP1} NP -> N :
+  	 <N head type>   = PROPIO ; Esta línea evita que los sustantivos comunes puedan ir sin artículo
+  	 <NP head>   	 = <N head> . 
+
+Rule {NP2} NP -> Det N :
+	 <Det head agr> = <N head agr>
+	 <N head type>	= COMUN ; Esta línea evita que los nombres propios puedan ir con artículo
+	 <NP head>		= <N head> .
+
+Rule {VP1} VP -> V NP : ;esta regla solo aplica a los V trans, la estructura de la oración es Suj V OD
+	 <VP head> = <V head> 
+	 <NP head sem> = -HUM ;con esta línea evitamos el CD pueda ser un elemento marcado como humano
+	 <V head arguments> = TRANS.
+
+Rule {VP2} VP -> V NP PP ; A partir de aquí, son reglas para los V ditrans. La estructura de esta es para oraciones Suj V OD OI
+	 <VP head> = <V head>
+	 <NP head sem> = -HUM
+	 <V head arguments> = DITRANS .
+
+Rule {VP3} VP -> ProP V NP (PP); La estructura de esta regla es para oraciones Suj V OI(PRO) V OD, pero también para Suj V OI(PRO) V OD OI
+	 <VP head> = <V head> 
+	 <NP head sem> = -HUM
+	 <PP head agr> = <ProP head agr> 
+	 <VP head dialect_feat> = <ProP head dialect_feat> 
+	 <V head arguments> = DITRANS.
